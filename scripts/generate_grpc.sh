@@ -23,3 +23,7 @@ protoc -I=../../proto ../../proto/greeter.proto \
   --grpc-web_out=import_style=commonjs,mode=grpcwebtext:.
 cd ../..
 
+echo "generate dart-client"
+protoc \
+    --dart_out=grpc:client/dart/lib/gen \
+    -Iproto proto/greeter.proto
