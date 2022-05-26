@@ -1,9 +1,13 @@
 package main
 
 import (
+	"context"
+	"fmt"
 	"log"
 	"net"
+	"time"
 
+	pb "deniffel.com/grpc-flutter-web/server/proto"
 	"google.golang.org/grpc"
 )
 
@@ -11,15 +15,21 @@ const (
 	port = "0.0.0.0:9090"
 )
 
-// type UserManagementServer struct {
-// 	pb.UnimplementedUserManagementServer
-// }
+type GreeterServer struct {
+	pb.UnimplementedGreeterServer
+}
 
-// func (s *UserManagementServer) CreateNewUser(ctx context.Context, in *pb.NewUser) (*pb.User, error) {
-// 	log.Printf("Received: %v", in.GetName())
-// 	var user_id int32 = int32(rand.Intn(100000))
-// 	return &pb.User{Name: in.GetName(), Age: in.GetAge(), Id: user_id}, nil
-// }
+func (s *GreeterServer) SayHello(ctx context.Context, in *pb.HelloRequest) (*pb.HelloReply, error) {
+	return &pb.HelloReply{Message: "Hello " + in.Name + " !"}, nil
+}
+
+func (s *GreeterServer) SayRepeatHello(in *pb.RepeatHelloRequest, stream pb.Greeter_SayRepeatHelloServer) error {
+	for i := 1; i <= 5; i++ {
+		stream.Send(&pb.HelloReply{Message: fmt.Sprintf("Hello %d!", i)})
+		time.Sleep(500 * time.Millisecond)
+	}
+	return nil
+}
 
 func main() {
 	lis, err := net.Listen("tcp", port)
@@ -28,7 +38,7 @@ func main() {
 	}
 
 	s := grpc.NewServer()
-	// pb.RegisterUserManagementServer(s, &UserManagementServer{})
+	pb.RegisterGreeterServer(s, &GreeterServer{})
 	log.Printf("server listening at %v", lis.Addr())
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
