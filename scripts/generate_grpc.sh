@@ -27,3 +27,8 @@ echo "generate dart-client"
 protoc \
     --dart_out=grpc:client/dart/lib/gen \
     -Iproto proto/greeter.proto
+
+echo "generate flutter-client"
+protoc \
+    --dart_out=grpc:client/flutter/lib/proto \
+    -Iproto proto/greeter.proto
