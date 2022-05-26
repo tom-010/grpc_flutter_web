@@ -24,7 +24,7 @@ func (s *GreeterServer) SayHello(ctx context.Context, in *pb.HelloRequest) (*pb.
 }
 
 func (s *GreeterServer) SayRepeatHello(in *pb.RepeatHelloRequest, stream pb.Greeter_SayRepeatHelloServer) error {
-	for i := 1; i <= 5; i++ {
+	for i := 1; i <= int(in.Count); i++ {
 		stream.Send(&pb.HelloReply{Message: fmt.Sprintf("Hello %d!", i)})
 		time.Sleep(500 * time.Millisecond)
 	}
