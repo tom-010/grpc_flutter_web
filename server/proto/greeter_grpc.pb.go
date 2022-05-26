@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.2.0
 // - protoc             v3.12.4
-// source: helloworld.proto
+// source: proto/greeter.proto
 
 package grpc_flutter_web
 
@@ -169,5 +169,5 @@ var Greeter_ServiceDesc = grpc.ServiceDesc{
 			ServerStreams: true,
 		},
 	},
-	Metadata: "helloworld.proto",
+	Metadata: "proto/greeter.proto",
 }

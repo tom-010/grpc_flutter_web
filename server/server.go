@@ -7,7 +7,7 @@ import (
 	"net"
 	"time"
 
-	pb "deniffel.com/grpc-flutter-web/server/proto"
+	pb "deniffel.com/grpc-flutter-web/proto"
 	"google.golang.org/grpc"
 )
 
