@@ -1,3 +1,13 @@
+grpc_flutter_web
+================
+
+gRPC does not work in javascript (and thus flutter web) out of the box. 
+Therefore, we need an envoy proxy as translator for the javascript and 
+flutter-web clients. This repo shows an hello-world example with unary 
+and server-streaming requests, done directly from client to server in 
+go, dart and flutter-linux and over the envoy proxy in flutter-web and 
+javascript.
+
 
 ## Step 1: Install grpc-web
 
@@ -11,39 +21,55 @@ sudo mv protoc-gen-grpc-web /usr/local/bin/
 ## Step 2: Generate proto files
 
 ```bash
-protoc -I=. helloworld.proto \
-  --js_out=import_style=commonjs:. \
-  --grpc-web_out=import_style=commonjs,mode=grpcwebtext:.
+./scripts/generate_grpc.sh
 ```
 
-## Step 2: Build the frontend (and backend)
+## Step 3: Start Proxy and Server
+
+In two different terminals, run:
 
 ```bash
-npm install
-npx webpack client.js
+./scripts/run_proxy.sh
+./scripts/run_server.sh
 ```
 
-Now `dist/client.js` exists
+## Step 4: Test the clients
 
-## Step 3: Start up
+All clients should output the same messages!
 
-Run these commands in three different terminals:
+### Go
 
 ```bash
-node server.js
-docker run -v "$(pwd)"/envoy.yaml:/etc/envoy/envoy.yaml:ro --network=host envoyproxy/envoy:v1.22.0
-python3 -m http.server 8081
+./scripts/run_client_go.sh
 ```
 
-## Step 4: Check
+### Dart
 
-Open [http://localhost:8081/](http://localhost:8081/) and open the console. There should be this output:
+```bash
+./scripts/run_client_dart.sh
+```
 
+### Javscript
+
+```bash
+./scripts/run_client_js.sh
 ```
-Hello! World
-Hey! World0
-Hey! World1
-Hey! World2
-Hey! World3
-Hey! World4
+
+Open the browser, navigate to [http://localhost:8081](http://localhost:8081) 
+and open the console
+
+### Linux
+
+```bash
+./scripts/run_client_linux.sh
 ```
+
+Press the butten in the lower right corner
+
+### Flutter Web
+
+```bash
+./scripts/run_client_web.sh
+```
+
+Press the butten in the lower right corner
