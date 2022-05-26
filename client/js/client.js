@@ -17,8 +17,8 @@
  */
 
 const {HelloRequest, RepeatHelloRequest,
-       HelloReply} = require('./helloworld_pb.js');
-const {GreeterClient} = require('./helloworld_grpc_web_pb.js');
+       HelloReply} = require('./greeter_pb.js');
+const {GreeterClient} = require('./greeter_grpc_web_pb.js');
 
 var client = new GreeterClient('http://' + window.location.hostname + ':8080',
                                null, null);
